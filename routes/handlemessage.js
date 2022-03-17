@@ -5,7 +5,7 @@ const HandleMessage = express.Router();
 
 HandleMessage.post('/', async (req, res) => {
 
-    const { uuid, date, message, from } = req.body;
+    const { uuid, date, message, from, alert } = req.body;
 
     await Friends.find({ uuid: uuid })
         .then(friend => {
@@ -13,8 +13,8 @@ HandleMessage.post('/', async (req, res) => {
                 return res.json({ message: "UUID does not match!" });
             }
             console.log(friend);
-            friend[0].messages.push({ date: date, from: from, message: message });
-            friend[1].messages.push({ date: date, from: from, message: message });
+            friend[0].messages.push({ date: date, from: from, message: message, alert: alert });
+            friend[1].messages.push({ date: date, from: from, message: message, alert: alert });
             friend[0].save();
             friend[1].save();
             res.json({ message: 'Message sended' })
